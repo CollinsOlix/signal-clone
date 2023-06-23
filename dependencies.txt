@@ -1,0 +1,6 @@
+react native navigation
+npx expo install react-native-svg@13.4.0
+react native elements
+eact-native-vector-icons
+firebase
+expo firebase
