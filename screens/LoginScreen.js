@@ -8,8 +8,6 @@ import { Signal } from "../assets/svgAssets";
 import { Icon } from "@rneui/themed";
 import { auth } from "../firebase";
 import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 
@@ -17,12 +15,10 @@ const filter =
   /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
 const isMail = (str) => str.search(filter) == 0;
 const LoginScreen = ({ navigation }, props) => {
-  const [user, setUser] = useState(null);
   const logUserIn = async () => {
     setIsLoading(true);
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-      alert("Logged in");
       navigation.replace("Home");
     } catch (error) {
       console.error(error);
@@ -30,7 +26,6 @@ const LoginScreen = ({ navigation }, props) => {
       setIsLoading(false);
     }
   };
-  
 
   const [isLoading, setIsLoading] = useState(false);
   const [email, setEmail] = useState("");

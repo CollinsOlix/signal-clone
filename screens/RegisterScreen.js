@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Button,
+  Keyboard,
 } from "react-native";
 import { useState, useRef } from "react";
 import { Signal } from "../assets/svgAssets";
@@ -30,10 +31,12 @@ const RegisterScreen = ({ navigation }) => {
           console.log("name before function call ", firstName);
           updateProfile(auth.currentUser, {
             displayName: `${firstName} ${lastName}`,
-            photoUrl: `https://th.bing.com/th/id/R.ea35c4313d1f00baf9c31c463d7d1810?rik=%2bR6Y5oB6P5Xq5Q&pid=ImgRaw&r=0`,
+            photoURL: `https://th.bing.com/th/id/R.ea35c4313d1f00baf9c31c463d7d1810?rik=%2bR6Y5oB6P5Xq5Q&pid=ImgRaw&r=0`,
           });
         } catch (error) {
           console.error(error);
+        } finally {
+          auth.currentUser.reload().then(() => alert("Reloaded user"));
         }
       });
       navigation.replace("Home");
@@ -53,190 +56,210 @@ const RegisterScreen = ({ navigation }) => {
   const eAddress = useRef();
   const fName = useRef();
   const lName = useRef();
+  const screen = useRef();
   const passkey = useRef();
   return (
-    <KeyboardAvoidingView behavior="padding" style={styles.container}>
-      <Text
-        style={{
-          color: "#4477eb",
-          fontWeight: "bold",
-          fontSize: 23,
-          margin: 20,
+    <View
+      onTouchStart={() => Keyboard.dismiss()}
+      style={{ flex: 1, width: "100%", alignItems: "center" }}
+    >
+      <KeyboardAvoidingView
+        ref={screen}
+        behavior="padding"
+        style={styles.container}
+        onTouchEnd={() => {
+          // screen.current.focus();
         }}
       >
-        Welcome to Signal!
-      </Text>
-      <Signal size="150" />
-      <Text
-        style={{
-          color: "#4477eb",
-          fontWeight: "bold",
-          fontSize: 23,
-          marginTop: 20,
-        }}
-      >
-        Create an account
-      </Text>
-      <View style={styles.inputAreas}>
-        <View
+        <Text
           style={{
-            padding: 5,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            borderStyle: "solid",
-            borderWidth: 2,
-            borderColor: "#4477eb",
-            borderRadius: 7,
-            marginVertical: 5,
+            color: "#4477eb",
+            fontWeight: "bold",
+            fontSize: 23,
+            margin: 20,
           }}
         >
-          <TextInput
-            ref={fName}
-            placeholder="First Name"
-            value={firstName}
-            enterKeyHint="next"
-            returnKeyType="next"
-            textContentType="givenName"
-            style={{ fontSize: 18 }}
-            onChangeText={(text) => {
-              setFirstName(text);
-            }}
-            onSubmitEditing={(e) => {
-              e.preventDefault();
-              lName.current.focus();
-            }}
-          />
-        </View>
-        <View
+          Welcome to Signal!
+        </Text>
+        <Signal size="150" />
+        <Text
           style={{
-            padding: 5,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            borderStyle: "solid",
-            borderWidth: 2,
-            borderColor: "#4477eb",
-            borderRadius: 7,
-            marginVertical: 5,
+            color: "#4477eb",
+            fontWeight: "bold",
+            fontSize: 23,
+            marginTop: 20,
           }}
         >
-          <TextInput
-            ref={lName}
-            placeholder="Last Name"
-            value={lastName}
-            enterKeyHint="next"
-            returnKeyType="next"
-            cursorColor={"black"}
-            textContentType="familyName"
-            style={{ fontSize: 18 }}
-            onChangeText={(text) => {
-              setLastName(text);
+          Create an account
+        </Text>
+        <View style={styles.inputAreas}>
+          <View
+            style={{
+              padding: 5,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              borderStyle: "solid",
+              borderWidth: 2,
+              borderColor: "#4477eb",
+              borderRadius: 7,
+              marginVertical: 5,
             }}
-            onSubmitEditing={(e) => {
-              e.preventDefault();
-              eAddress.current.focus();
-            }}
-          />
-        </View>
-        <View
-          style={{
-            padding: 5,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            borderStyle: "solid",
-            borderWidth: 2,
-            borderColor: "#4477eb",
-            borderRadius: 7,
-            marginVertical: 5,
-          }}
-        >
-          <TextInput
-            ref={eAddress}
-            placeholder="Email"
-            value={email}
-            enterKeyHint="next"
-            returnKeyType="next"
-            textContentType="emailAddress"
-            style={{ fontSize: 18 }}
-            onChangeText={(text) => {
-              text = text.toLowerCase();
-              console.log(text);
-              setEmail(text);
-            }}
-            onSubmitEditing={(e) => {
-              e.preventDefault();
-              isMail(email)
-                ? passkey.current.focus()
-                : eAddress.current.focus();
-            }}
-          />
-        </View>
-        <View
-          style={{
-            padding: 5,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            borderStyle: "solid",
-            borderWidth: 2,
-            borderColor: "#4477eb",
-            borderRadius: 7,
-            marginVertical: 5,
-          }}
-        >
-          <TextInput
-            maxLength={12}
-            ref={passkey}
-            secureTextEntry={showPassword}
-            placeholder="Password"
-            textContentType="password"
-            style={{ fontSize: 18 }}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-          />
-          <View>
-            {showPassword ? (
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <Icon name="eye" type="ionicon" size={30} color={"#4477eb"} />
-              </TouchableOpacity>
-            ) : (
-              <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                <Icon
-                  name="eye-off"
-                  type="ionicon"
-                  size={30}
-                  color={"#4477eb"}
-                />
-              </TouchableOpacity>
-            )}
-          </View>
-        </View>
-      </View>
-      <View style={styles.loginBtn}>
-        <View style={{ width: 200 }}>
-          {isLoading ? (
-            <ActivityIndicator size="large" color="#4477eb" />
-          ) : (
-            <Button
-              title="Sign up"
-              color={"#4477E8"}
-              onPress={() => {
-                register();
-                console.log("fName", firstName);
+          >
+            <TextInput
+              ref={fName}
+              placeholder="First Name"
+             
+              value={firstName}
+              enterKeyHint="next"
+              returnKeyType="next"
+              textContentType="givenName"
+              style={{ fontSize: 18 }}
+              onChangeText={(text) => {
+                setFirstName(text);
+              }}
+              onSubmitEditing={(e) => {
+                e.preventDefault();
+                lName.current.focus();
               }}
             />
-          )}
+          </View>
+
+          <View
+            style={{
+              padding: 5,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              borderStyle: "solid",
+              borderWidth: 2,
+              borderColor: "#4477eb",
+              borderRadius: 7,
+              marginVertical: 5,
+            }}
+          >
+            <TextInput
+              ref={lName}
+              placeholder="Last Name"
+              value={lastName}
+              enterKeyHint="next"
+              returnKeyType="next"
+              cursorColor={"black"}
+              textContentType="familyName"
+              style={{ fontSize: 18 }}
+              onChangeText={(text) => {
+                setLastName(text);
+              }}
+              onSubmitEditing={(e) => {
+                e.preventDefault();
+                eAddress.current.focus();
+              }}
+            />
+          </View>
+          <View
+            style={{
+              padding: 5,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              borderStyle: "solid",
+              borderWidth: 2,
+              borderColor: "#4477eb",
+              borderRadius: 7,
+              marginVertical: 5,
+            }}
+          >
+            <TextInput
+              ref={eAddress}
+              placeholder="Email"
+              value={email}
+              enterKeyHint="next"
+              returnKeyType="next"
+              textContentType="emailAddress"
+              style={{ fontSize: 18 }}
+              onChangeText={(text) => {
+                text = text.toLowerCase();
+                console.log(text);
+                setEmail(text);
+              }}
+              onSubmitEditing={(e) => {
+                e.preventDefault();
+                isMail(email)
+                  ? passkey.current.focus()
+                  : eAddress.current.focus();
+              }}
+            />
+          </View>
+          <View
+            style={{
+              padding: 5,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              borderStyle: "solid",
+              borderWidth: 2,
+              borderColor: "#4477eb",
+              borderRadius: 7,
+              marginVertical: 5,
+            }}
+          >
+            <TextInput
+              maxLength={12}
+              ref={passkey}
+              secureTextEntry={showPassword}
+              placeholder="Password"
+              textContentType="password"
+              style={{ fontSize: 18 }}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+            />
+            <View>
+              {showPassword ? (
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                >
+                  <Icon name="eye" type="ionicon" size={30} color={"#4477eb"} />
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  onPress={() => setShowPassword(!showPassword)}
+                >
+                  <Icon
+                    name="eye-off"
+                    type="ionicon"
+                    size={30}
+                    color={"#4477eb"}
+                  />
+                </TouchableOpacity>
+              )}
+            </View>
+          </View>
         </View>
-        <View style={styles.signUp}>
-          <Text>Already have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.replace("Login")}>
-            <Text style={{ color: "#4477eb", fontWeight: "bold" }}>
-              {" "}
-              Log in
-            </Text>
-          </TouchableOpacity>
-          <Text> instead</Text>
+        <View style={styles.loginBtn}>
+          <View style={{ width: 200 }}>
+            {isLoading ? (
+              <ActivityIndicator size="large" color="#4477eb" />
+            ) : (
+              <Button
+                title="Sign up"
+                color={"#4477E8"}
+                onPress={() => {
+                  register();
+                  console.log("fName", firstName);
+                }}
+              />
+            )}
+          </View>
+          <View style={styles.signUp}>
+            <Text>Already have an account? </Text>
+            <TouchableOpacity onPress={() => navigation.replace("Login")}>
+              <Text style={{ color: "#4477eb", fontWeight: "bold" }}>
+                {" "}
+                Log in
+              </Text>
+            </TouchableOpacity>
+            <Text> instead</Text>
+          </View>
         </View>
-      </View>
-    </KeyboardAvoidingView>
+        <View style={{ height: 100 }}></View>
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 
