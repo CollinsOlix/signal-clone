@@ -13,7 +13,7 @@ import { useState, useRef } from "react";
 import { Signal } from "../assets/svgAssets";
 import { Icon } from "@rneui/themed";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth } from "../FireBase.config";
 
 const filter =
   /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;

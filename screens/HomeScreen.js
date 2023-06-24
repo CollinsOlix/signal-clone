@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import React, { useContext, useLayoutEffect, useState } from "react";
-import { auth } from "../firebase";
+import { auth } from "../FireBase.config";
 import { UserContext } from "../contexts/UserContext";
 import { Image } from "react-native";
 import { StatusBar } from "expo-status-bar";

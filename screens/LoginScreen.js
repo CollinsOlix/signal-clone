@@ -6,7 +6,7 @@ import { StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native";
 import { Signal } from "../assets/svgAssets";
 import { Icon } from "@rneui/themed";
-import { auth } from "../firebase";
+import { auth } from "../FireBase.config";
 import {
   signInWithEmailAndPassword,
 } from "firebase/auth";

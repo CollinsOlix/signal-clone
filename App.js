@@ -7,7 +7,7 @@ import RegisterScreen from "./screens/RegisterScreen";
 import HomeScreen from "./screens/HomeScreen";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase";
+import { auth } from "./FireBase.config";
 import { UserContext } from "./contexts/UserContext";
 import NewContact from "./screens/NewContact";
 
