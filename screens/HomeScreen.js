@@ -14,25 +14,34 @@ import { StatusBar } from "expo-status-bar";
 import { Avatar } from "@rneui/themed";
 import ContactList from "../components/ContactList";
 import { Icon } from "@rneui/base";
-import Modall from "../components/Modall";
+import AddNewModal from "../components/AddNewModal";
+import UserModal from "../components/UserModal";
 
 const HomeScreen = ({ navigation }) => {
   const { user } = useContext(UserContext);
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "Signal",
-      headerTintColor: "black",
-      headerStyle: { backgroundColor: "white" },
+      headerTintColor: "white",
+      headerStyle: { backgroundColor: "#4477eb" },
       headerLeft: () => (
-        <TouchableOpacity onPress={logUserOut}>
-          <Avatar source={{ uri: user.photoURL }} rounded size={40} />
+        <TouchableOpacity
+          onPress={logUserOut}
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            margin: 10,
+            marginTop: 0,
+          }}
+        >
+          <UserModal navigation={navigation} />
         </TouchableOpacity>
       ),
       headerRight: () => (
         <View style={{ flexDirection: "row" }}>
           <TouchableOpacity style={{ marginHorizontal: 10 }}>
             <Icon
-              color="#1c1c1c"
+              color="white"
               containerStyle={{}}
               disabledStyle={{}}
               iconProps={{}}
@@ -46,7 +55,7 @@ const HomeScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity>
             <Icon
-              color="#1c1c1c"
+              color="white"
               containerStyle={{}}
               disabledStyle={{}}
               iconProps={{}}
@@ -67,13 +76,13 @@ const HomeScreen = ({ navigation }) => {
     navigation.replace("Register");
   };
   return (
-    <View style={{ position: "relative" }}>
+    <View style={{ position: "relative", flex: 1 }}>
       <StatusBar style="auto" />
       <View style={styles.modal}>
-        <Modall navigation={navigation}/>
+        <AddNewModal navigation={navigation} />
       </View>
       <View style={styles.screen}>
-        <ContactList />
+        <ContactList navigation={navigation} />
       </View>
     </View>
   );
@@ -89,6 +98,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
     right: 50,
     bottom: 75,
+    flex: 1,
   },
 });
 export default HomeScreen;

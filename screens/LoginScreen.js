@@ -1,5 +1,5 @@
 import { View, Text, ActivityIndicator } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Button, TextInput } from "react-native";
 import { KeyboardAvoidingView } from "react-native";
 import { StyleSheet } from "react-native";
@@ -7,19 +7,37 @@ import { TouchableOpacity } from "react-native";
 import { Signal } from "../assets/svgAssets";
 import { Icon } from "@rneui/themed";
 import { auth } from "../FireBase.config";
-import {
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { retrieveStoredData, storeData } from "../components/Functions";
 
 const filter =
   /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
 const isMail = (str) => str.search(filter) == 0;
 const LoginScreen = ({ navigation }, props) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  useLayoutEffect(() => {
+    retrieveStoredData()
+      .then(async (data) => {
+        data &&
+          (setEmail(data[0]),
+          setPassword(data[1]),
+          await signInWithEmailAndPassword(auth, data[0], data[1]),
+          navigation.replace("Home"));
+      })
+      .catch((e) => {
+        console.log("uselayout error", e);
+      });
+  }, []);
+
   const logUserIn = async () => {
+    console.log(email, password);
     setIsLoading(true);
     try {
-      const response = await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, email, password);
       navigation.replace("Home");
+      storeData(email, password);
     } catch (error) {
       console.error(error);
     } finally {
@@ -28,8 +46,6 @@ const LoginScreen = ({ navigation }, props) => {
   };
 
   const [isLoading, setIsLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
   const eAddress = useRef();
   const passkey = useRef();
@@ -43,7 +59,7 @@ const LoginScreen = ({ navigation }, props) => {
           margin: 20,
         }}
       >
-        Welcome back!
+        Welcome bac
       </Text>
       <Signal size="200" />
       <Text

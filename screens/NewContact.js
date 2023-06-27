@@ -1,7 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useLayoutEffect } from "react";
 
-const NewContact = () => {
+const NewContact = ({ navigation }) => {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: "Add new Contact",
+      headerBackTitle: "Chats",
+      
+    });
+  });
   return (
     <View>
       <Text>NewContact</Text>

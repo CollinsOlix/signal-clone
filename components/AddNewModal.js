@@ -1,8 +1,16 @@
 import { Icon } from "@rneui/base";
 import React, { useState } from "react";
-import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import {
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  Pressable,
+  View,
+  TouchableOpacity,
+} from "react-native";
 
-const Modall = ({ navigation }) => {
+const AddNewModal = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={styles.centeredView}>
@@ -15,7 +23,7 @@ const Modall = ({ navigation }) => {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.centeredView}>
+        <View style={[styles.centeredView]}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Add New</Text>
             <Pressable
@@ -28,21 +36,34 @@ const Modall = ({ navigation }) => {
               <Text style={styles.textStyle}>Add New Contact</Text>
             </Pressable>
             <Pressable
+              style={[
+                styles.button,
+                styles.buttonClose,
+                { marginBottom: 10, paddingHorizontal: 20 },
+              ]}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+                navigation.navigate("NewContact");
+              }}
+            >
+              <Text style={styles.textStyle}>Add New Chat</Text>
+            </Pressable>
+            <TouchableOpacity
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
             >
               <Icon name="close" color={"white"} size={25} />
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
 
-      <Pressable
+      <TouchableOpacity
         style={[styles.button, styles.buttonOpen]}
         onPress={() => setModalVisible(true)}
       >
-        <Icon name="add" color={"white"} size={40} />
-      </Pressable>
+        <Icon name="add" color={"#4477eb"} size={20} raised />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -78,7 +99,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#4477eb",
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: "#4477eb",
   },
   textStyle: {
     color: "white",
@@ -92,4 +113,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Modall;
+export default AddNewModal;

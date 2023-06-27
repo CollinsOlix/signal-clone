@@ -1,1 +1,10 @@
-user {"_redirectEventId": undefined, "apiKey": "AIzaSyBsNtcezWFYaiaiqrYAYKdILUGDZ2khkK4", "appName": "[DEFAULT]", "createdAt": "1687539795086", "displayName": undefined, "email": "collins.olix@gmail.com", "emailVerified": false, "isAnonymous": false, "lastLoginAt": "1687541453807", "phoneNumber": undefined, "photoURL": undefined, "providerData": [[Object]], "stsTokenManager": {"accessToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjhkMDNhZTdmNDczZjJjNmIyNTI3NmMwNjM2MGViOTk4ODdlMjNhYTkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc2lnbmFsLWNsb25lLWE5N2E1IiwiYXVkIjoic2lnbmFsLWNsb25lLWE5N2E1IiwiYXV0aF90aW1lIjoxNjg3NTQxNDUzLCJ1c2VyX2lkIjoiWTZ4eERBZkZDTFZyTElJeVJhdWwwTDlOVEV3MSIsInN1YiI6Ilk2eHhEQWZGQ0xWckxJSXlSYXVsMEw5TlRFdzEiLCJpYXQiOjE2ODc1NDE0NTMsImV4cCI6MTY4NzU0NTA1MywiZW1haWwiOiJjb2xsaW5zLm9saXhAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImNvbGxpbnMub2xpeEBnbWFpbC5jb20iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJwYXNzd29yZCJ9fQ.c48grgrCNYvYSXBq4m_fAtrSndyVav7KnQ-5JUa7yf0dovbPd3nONwwkRG0H8A5jpPxPDQoKvPYQ3_eoptJgwqOuISMih5DbnONqg05osPkAM59jM7bj9zYwFHkuk5RK7FD6t9J-UzBULUNm30LYDohTVcMyTHh14SPePuxk8Ak9ZVfYhVo--TgD4_XwuL7V9PeT3snjA8Fm1CyRfwyBhotzMhw8fb1Bq_jXMYdLsWaj-ZytpWV0FX9FoYhZDqdId379BkhdStuVri5r-Y4fJAZaOJuBlIazr5IdcATuE37l5yX6eAczMNafkgoXaO0uOs0JLtJ8RBhfqvIrYnFRBw", "expirationTime": 1687545052939, "refreshToken": "APZUo0RhVcm01oQktfiOnGm4aNoySV9X23H99IwRKmh2ZoNiAbOR_nK9_X_2_WFFnfJ2WAOUrlZCJMHDizn7Q9PkblSMfH9bLba244FLsRp4qAgdSZKjUE_e_5mvp--CYPgEWmhFC27x5qBnpM09fI2BhEGRjLH_7KsarTNKaBzvCM9AYflEc8do1pteQl6maAl2M98fkB5LvNiXl8FzEBP08edbpVM4t1fu4UGfvTWHNCLXyhV2uwo"}, "tenantId": undefined, "uid": "Y6xxDAfFCLVrLIIyRaul0L9NTEw1"}
+const name = "Yolo",
+  age = 10;
+
+const workOnClass = {
+  name: "Han",
+  age: 12,
+  printDetails: function() {console.log(`Hello there ${name}, its been ${age} years`)},
+};
+
+cworkOnClass.printDetails() // prints the object with all properties and methods defined in

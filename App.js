@@ -10,6 +10,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./FireBase.config";
 import { UserContext } from "./contexts/UserContext";
 import NewContact from "./screens/NewContact";
+import ChatScreen from "./screens/ChatScreen";
 
 const Stack = createNativeStackNavigator();
 export default function App() {
@@ -28,7 +29,7 @@ export default function App() {
     <UserContext.Provider value={{ user: user }}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName={goHome ? "Home" : "Register"}
+          initialRouteName={goHome ? "Home" : "Login"}
           screenOptions={{
             headerStyle: {
               backgroundColor: "rgb(10, 90, 231)",
@@ -72,6 +73,17 @@ export default function App() {
           <Stack.Screen
             name="NewContact"
             component={NewContact}
+            options={{
+              title: "New Contact",
+              headerTintColor: "#fff",
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+            }}
+          />
+          <Stack.Screen
+            name="ChatScreen"
+            component={ChatScreen}
             options={{
               title: "New Contact",
               headerTintColor: "#fff",

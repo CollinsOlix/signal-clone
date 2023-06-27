@@ -3,7 +3,7 @@ import React from "react";
 import { Avatar, Button, ListItem } from "@rneui/themed";
 
 const Contact = (props) => {
-  const { contact } = props;
+  const { contact, navigation } = props;
   return (
     <ListItem.Swipeable
       bottomDivider
@@ -24,12 +24,12 @@ const Contact = (props) => {
         />
       )}
     >
-        <TouchableOpacity>
-          <Avatar rounded source={{ uri: contact.photoURL }} size={45} />
-        </TouchableOpacity>
       <TouchableOpacity>
+        <Avatar rounded source={{ uri: contact.photoURL }} size={45} />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("ChatScreen")}>
         <ListItem.Content>
-          <ListItem.Title style={{ fontWeight: "800", fontSize: 20 }}>
+          <ListItem.Title style={{ fontWeight: "800", fontSize: 18 }}>
             Mr Guggenheim
           </ListItem.Title>
           <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail">
