@@ -1,5 +1,5 @@
 import { Icon } from "@rneui/base";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Alert,
   Modal,
@@ -9,8 +9,10 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
+import { UserContext } from "../contexts/UserContext";
 
 const AddNewModal = ({ navigation }) => {
+  const { currentTheme } = useContext(UserContext);
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={styles.centeredView}>
@@ -43,7 +45,7 @@ const AddNewModal = ({ navigation }) => {
               ]}
               onPress={() => {
                 setModalVisible(!modalVisible);
-                navigation.navigate("NewContact");
+                navigation.navigate("AddChat");
               }}
             >
               <Text style={styles.textStyle}>Add New Chat</Text>
@@ -59,10 +61,13 @@ const AddNewModal = ({ navigation }) => {
       </Modal>
 
       <TouchableOpacity
-        style={[styles.button, styles.buttonOpen]}
+        style={[
+          styles.button,
+          { backgroundColor: currentTheme[0].headerColor },
+        ]}
         onPress={() => setModalVisible(true)}
       >
-        <Icon name="add" color={"#4477eb"} size={20} raised />
+        <Icon name="add" color={currentTheme[0].headerColor} size={22} raised />
       </TouchableOpacity>
     </View>
   );

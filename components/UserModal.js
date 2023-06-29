@@ -1,4 +1,4 @@
-import { Icon } from "@rneui/base";
+import { Icon, ListItem } from "@rneui/base";
 import React, { useContext, useState } from "react";
 import {
   Modal,
@@ -14,65 +14,118 @@ import { Avatar } from "@rneui/themed";
 import { auth } from "../FireBase.config";
 
 const UserModal = ({ navigation }) => {
-  const { user } = useContext(UserContext);
+  const { user, userLoggedOut } = useContext(UserContext);
+  const [loggedOut, setLoggedOut] = userLoggedOut;
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <View style={styles.centeredView}>
       <Modal
         animationType="slide"
-        transparent={true}
+        transparent={false}
         visible={modalVisible}
         onRequestClose={() => {
           // Alert.alert("Modal has been closed.");
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.centeredView}>
+        <View style={styles.centeredView}
+        onTouchStart={()=>setModalVisible(false)}
+        >
           <View style={styles.modalView}>
-            <Text
-              style={[
-                styles.modalText,
-                {
-                  borderBottomColor: "grey",
-                  borderBottomWidth: 1,
-                  borderStyle: "solid",
-                  paddingHorizontal: 35,
-                },
-              ]}
-            >
-              Easy Access
-            </Text>
-            <Avatar source={{ uri: user.photoURL }} size={250} />
-
-            <Pressable
-              style={[
-                styles.button,
-                styles.buttonClose,
-                {
-                  marginBottom: 10,
-                  backgroundColor: "red",
-                  marginVertical: 10,
-                  width: "100%",
-                },
-              ]}
-              onPress={() => {
-                setModalVisible(!modalVisible);
-                auth.signOut();
-                navigation.replace("Login");
+            <View
+              style={{
+                backgroundColor: "#4477eb",
+                paddingHorizontal: 35,
+                borderWidth: 3,
+                borderColor: "#4477eb",
+                borderStyle: "solid",
+                marginBottom: 20,
+                borderTopRightRadius: 7,
+                borderTopLeftRadius: 7,
               }}
             >
-              <Text style={{ color: "white", fontSize: 20, fontWeight: "700" }}>
-                Sign Out
+              <Text
+                style={[
+                  styles.modalText,
+                  {
+                    fontWeight: "500",
+                    color: "white",
+                  },
+                ]}
+              >
+                Easy Access
               </Text>
-            </Pressable>
-            <TouchableOpacity
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Icon name="close" color={"white"} size={25} />
-            </TouchableOpacity>
+            </View>
+            <View style={{ alignItems: "center", marginBottom: 15 }}>
+              <Avatar source={{ uri: user.photoURL }} size={200} rounded />
+            </View>
+
+            <View>
+              <TouchableOpacity
+                style={{
+                  borderColor: "#c7c7c7",
+                  borderStyle: "solid",
+                  borderTopWidth: 1,
+                  marginBottom: 2,
+                }}
+                onPress={() => navigation.navigate("Settings")}
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    paddingVertical: 12,
+                    fontSize: 20,
+                  }}
+                >
+                  Settings
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{
+                  borderColor: "#c7c7c7",
+                  borderStyle: "solid",
+                  borderTopWidth: 1,
+                  marginBottom: 2,
+                }}
+              >
+                <Text
+                  style={{
+                    textAlign: "center",
+                    paddingVertical: 12,
+                    fontSize: 20,
+                  }}
+                >
+                  Attribution
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
+        <TouchableOpacity
+          style={[
+            styles.button,
+            styles.buttonClose,
+            { backgroundColor: "#f13030", borderRadius: 0 },
+          ]}
+          onPress={() => {
+            setModalVisible(!modalVisible);
+            auth.signOut();
+            setLoggedOut(true);
+            navigation.replace("Login");
+          }}
+        >
+          <Text
+            style={{
+              textAlign: "center",
+              fontSize: 20,
+              fontWeight: "700",
+              color: "white",
+            }}
+          >
+            Log Out
+          </Text>
+        </TouchableOpacity>
       </Modal>
 
       <TouchableOpacity style={{}} onPress={() => setModalVisible(true)}>
@@ -92,9 +145,9 @@ const styles = StyleSheet.create({
   modalView: {
     // margin: 20,
     backgroundColor: "white",
-    paddingVertical: 35,
-    borderRadius: 20,
-    alignItems: "center",
+    // paddingVertical: 15,
+    borderRadius: 10,
+    // alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

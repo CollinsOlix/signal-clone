@@ -1,5 +1,11 @@
 import { View, Text, ActivityIndicator } from "react-native";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { Button, TextInput } from "react-native";
 import { KeyboardAvoidingView } from "react-native";
 import { StyleSheet } from "react-native";
@@ -9,6 +15,7 @@ import { Icon } from "@rneui/themed";
 import { auth } from "../FireBase.config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { retrieveStoredData, storeData } from "../components/Functions";
+import { UserContext } from "../contexts/UserContext";
 
 const filter =
   /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
@@ -16,6 +23,9 @@ const isMail = (str) => str.search(filter) == 0;
 const LoginScreen = ({ navigation }, props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { userLoggedOut } = useContext(UserContext);
+  const [loggedOut, setLoggedOut] = userLoggedOut;
+  const [isLoading, setIsLoading] = useState(false);
 
   useLayoutEffect(() => {
     retrieveStoredData()
@@ -23,8 +33,11 @@ const LoginScreen = ({ navigation }, props) => {
         data &&
           (setEmail(data[0]),
           setPassword(data[1]),
-          await signInWithEmailAndPassword(auth, data[0], data[1]),
-          navigation.replace("Home"));
+          loggedOut === false &&
+            (setIsLoading(true),
+            await signInWithEmailAndPassword(auth, data[0], data[1]),
+            setLoggedOut(false),
+            navigation.replace("Home")));
       })
       .catch((e) => {
         console.log("uselayout error", e);
@@ -45,7 +58,6 @@ const LoginScreen = ({ navigation }, props) => {
     }
   };
 
-  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
   const eAddress = useRef();
   const passkey = useRef();
@@ -59,7 +71,7 @@ const LoginScreen = ({ navigation }, props) => {
           margin: 20,
         }}
       >
-        Welcome bac
+        Welcome back!
       </Text>
       <Signal size="200" />
       <Text

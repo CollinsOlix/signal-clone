@@ -11,11 +11,28 @@ import { auth } from "./FireBase.config";
 import { UserContext } from "./contexts/UserContext";
 import NewContact from "./screens/NewContact";
 import ChatScreen from "./screens/ChatScreen";
+import Settings from "./screens/Settings";
+import Attribution from "./screens/Attribution";
+import AddChatScreen from "./screens/AddChatScreen";
 
+const themes = {
+  light: {
+    backdrop: "#ececec",
+    text: "#1c1c1c",
+    headerColor: "rgb(10,90,231)",
+  },
+  dark: {
+    backdrop: "#131313",
+    text: "#ececec",
+    headerColor: "#1417bb",
+  },
+};
 const Stack = createNativeStackNavigator();
 export default function App() {
+  const [currentTheme, setCurrentTheme] = useState(themes.dark);
   const [user, setUser] = useState(null);
   const [goHome, setGoHome] = useState(false);
+  const [loggedOut, setLoggedOut] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -26,13 +43,20 @@ export default function App() {
     });
   }, [user]);
   return (
-    <UserContext.Provider value={{ user: user }}>
+    <UserContext.Provider
+      value={{
+        user: user,
+        userLoggedOut: [loggedOut, setLoggedOut],
+        themes,
+        currentTheme: [currentTheme, setCurrentTheme],
+      }}
+    >
       <NavigationContainer>
         <Stack.Navigator
           initialRouteName={goHome ? "Home" : "Login"}
           screenOptions={{
             headerStyle: {
-              backgroundColor: "rgb(10, 90, 231)",
+              backgroundColor: currentTheme.headerColor,
             },
             headerTitleAlign: "center",
           }}
@@ -42,7 +66,8 @@ export default function App() {
             component={LoginScreen}
             options={{
               title: "Login to Signal",
-              headerTintColor: "#fff",
+              headerTintColor: currentTheme.text,
+              backgroundColor: currentTheme.headerColor,
               headerTitleStyle: {
                 fontWeight: "bold",
               },
@@ -53,18 +78,31 @@ export default function App() {
             component={RegisterScreen}
             options={{
               title: "Sign up for Signal",
-              headerTintColor: "#fff",
+              headerTintColor: currentTheme.text,
+              backgroundColor: currentTheme.headerColor,
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+            }}
+          />
+
+          <Stack.Screen
+            name="Home"
+            component={HomeScreen}
+            options={{
+              headerTintColor: currentTheme.text,
+              backgroundColor: currentTheme.headerColor,
               headerTitleStyle: {
                 fontWeight: "bold",
               },
             }}
           />
           <Stack.Screen
-            name="Home"
-            component={HomeScreen}
+            name="Settings"
+            component={Settings}
             options={{
-              title: "Sign up for Signal",
-              headerTintColor: "#fff",
+              headerTintColor: currentTheme.text,
+              backgroundColor: currentTheme.headerColor,
               headerTitleStyle: {
                 fontWeight: "bold",
               },
@@ -75,7 +113,32 @@ export default function App() {
             component={NewContact}
             options={{
               title: "New Contact",
-              headerTintColor: "#fff",
+              headerTintColor: currentTheme.text,
+              backgroundColor: currentTheme.headerColor,
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+            }}
+          />
+          <Stack.Screen
+            name="AddChat"
+            component={AddChatScreen}
+            options={{
+              title: "Add New Chat",
+              headerTintColor: currentTheme.text,
+              backgroundColor: currentTheme.headerColor,
+              headerTitleStyle: {
+                fontWeight: "bold",
+              },
+            }}
+          />
+          <Stack.Screen
+            name="Attribution"
+            component={Attribution}
+            options={{
+              title: "New Contact",
+              headerTintColor: currentTheme.text,
+              backgroundColor: currentTheme.headerColor,
               headerTitleStyle: {
                 fontWeight: "bold",
               },
@@ -86,7 +149,8 @@ export default function App() {
             component={ChatScreen}
             options={{
               title: "New Contact",
-              headerTintColor: "#fff",
+              headerTintColor: currentTheme.text,
+              backgroundColor: currentTheme.headerColor,
               headerTitleStyle: {
                 fontWeight: "bold",
               },

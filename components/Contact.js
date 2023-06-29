@@ -1,11 +1,20 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { Avatar, Button, ListItem } from "@rneui/themed";
+import { UserContext } from "../contexts/UserContext";
+import { ChatInfoContext } from "../contexts/ChatInfoContext";
 
 const Contact = (props) => {
-  const { contact, navigation } = props;
+  const {
+    contact,
+    id,
+    data,
+    navigation,
+  } = props;
+  const { openChatWithUserInfo } = useContext(ChatInfoContext);
   return (
     <ListItem.Swipeable
+      key={id}
       bottomDivider
       leftContent={(reset) => (
         <Button
@@ -27,10 +36,10 @@ const Contact = (props) => {
       <TouchableOpacity>
         <Avatar rounded source={{ uri: contact.photoURL }} size={45} />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("ChatScreen")}>
+      <TouchableOpacity onPress={() => openChatWithUserInfo(id, data)}>
         <ListItem.Content>
           <ListItem.Title style={{ fontWeight: "800", fontSize: 18 }}>
-            Mr Guggenheim
+            {data.chatName}
           </ListItem.Title>
           <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail">
             I recieved your last message thanks

@@ -9,6 +9,7 @@ import {
 import React, { useContext, useLayoutEffect, useState } from "react";
 import { auth } from "../FireBase.config";
 import { UserContext } from "../contexts/UserContext";
+import { ChatInfoContext } from "../contexts/ChatInfoContext";
 import { Image } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Avatar } from "@rneui/themed";
@@ -18,15 +19,22 @@ import AddNewModal from "../components/AddNewModal";
 import UserModal from "../components/UserModal";
 
 const HomeScreen = ({ navigation }) => {
-  const { user } = useContext(UserContext);
+  const { user, currentTheme } = useContext(UserContext);
+
+  const openChatWithInfo = (id, data) => {
+    navigation.navigate("ChatScreen", {
+      id,
+      data,
+    });
+  };
   useLayoutEffect(() => {
     navigation.setOptions({
       title: "Signal",
-      headerTintColor: "white",
-      headerStyle: { backgroundColor: "#4477eb" },
+      headerTintColor: currentTheme[0].text,
+      headerStyle: { backgroundColor: currentTheme[0].headerColor },
       headerLeft: () => (
         <TouchableOpacity
-          onPress={logUserOut}
+          // onPress={logUserOut}
           style={{
             alignItems: "center",
             justifyContent: "center",
@@ -76,15 +84,21 @@ const HomeScreen = ({ navigation }) => {
     navigation.replace("Register");
   };
   return (
-    <View style={{ position: "relative", flex: 1 }}>
-      <StatusBar style="auto" />
-      <View style={styles.modal}>
-        <AddNewModal navigation={navigation} />
+    <ChatInfoContext.Provider
+      value={{
+        openChatWithInfo,
+      }}
+    >
+      <View style={{ position: "relative", flex: 1 }}>
+        <StatusBar style="auto" />
+        <View style={styles.modal}>
+          <AddNewModal navigation={navigation} />
+        </View>
+        <View style={styles.screen}>
+          <ContactList navigation={navigation} />
+        </View>
       </View>
-      <View style={styles.screen}>
-        <ContactList navigation={navigation} />
-      </View>
-    </View>
+    </ChatInfoContext.Provider>
   );
 };
 
