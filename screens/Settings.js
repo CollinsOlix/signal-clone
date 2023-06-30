@@ -1,11 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useLayoutEffect } from "react";
 
-const Settings = ({navigation}) => {
-    useLayoutEffect(() =>
-    navigation.setOptions({
-      title: "Settings",
-    })
+const Settings = ({ navigation }) => {
+  useLayoutEffect(
+    () =>
+      navigation.setOptions({
+        title: "Settings",
+      }),
+    []
   );
   return (
     <View>

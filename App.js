@@ -18,7 +18,7 @@ import AddChatScreen from "./screens/AddChatScreen";
 const themes = {
   light: {
     backdrop: "#ececec",
-    text: "#1c1c1c",
+    text: "#fff",
     headerColor: "rgb(10,90,231)",
   },
   dark: {
@@ -29,7 +29,7 @@ const themes = {
 };
 const Stack = createNativeStackNavigator();
 export default function App() {
-  const [currentTheme, setCurrentTheme] = useState(themes.dark);
+  const [currentTheme, setCurrentTheme] = useState(themes.light);
   const [user, setUser] = useState(null);
   const [goHome, setGoHome] = useState(false);
   const [loggedOut, setLoggedOut] = useState(false);
@@ -136,7 +136,7 @@ export default function App() {
             name="Attribution"
             component={Attribution}
             options={{
-              title: "New Contact",
+              title: "Attribution",
               headerTintColor: currentTheme.text,
               backgroundColor: currentTheme.headerColor,
               headerTitleStyle: {

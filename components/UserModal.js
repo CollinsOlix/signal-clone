@@ -18,7 +18,7 @@ const UserModal = ({ navigation }) => {
   const [loggedOut, setLoggedOut] = userLoggedOut;
   const [modalVisible, setModalVisible] = useState(false);
   return (
-    <View style={styles.centeredView}>
+    <View style={styles.container}>
       <Modal
         animationType="slide"
         transparent={false}
@@ -28,8 +28,9 @@ const UserModal = ({ navigation }) => {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.centeredView}
-        onTouchStart={()=>setModalVisible(false)}
+        <View
+          style={styles.centeredView}
+          onTouchStart={() => setModalVisible(false)}
         >
           <View style={styles.modalView}>
             <View
@@ -128,7 +129,10 @@ const UserModal = ({ navigation }) => {
         </TouchableOpacity>
       </Modal>
 
-      <TouchableOpacity style={{}} onPress={() => setModalVisible(true)}>
+      <TouchableOpacity
+       
+        onPress={() => setModalVisible(true)}
+      >
         <Avatar source={{ uri: user.photoURL }} rounded size={40} />
       </TouchableOpacity>
     </View>
@@ -136,6 +140,10 @@ const UserModal = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
   centeredView: {
     flex: 1,
     justifyContent: "center",

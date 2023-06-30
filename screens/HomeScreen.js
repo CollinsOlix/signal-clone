@@ -17,8 +17,11 @@ import ContactList from "../components/ContactList";
 import { Icon } from "@rneui/base";
 import AddNewModal from "../components/AddNewModal";
 import UserModal from "../components/UserModal";
+import { collection, getDocs } from "firebase/firestore";
+import { fireStore } from "../FireBase.config";
 
 const HomeScreen = ({ navigation }) => {
+  const [chats, setChats] = useState([]);
   const { user, currentTheme } = useContext(UserContext);
 
   const openChatWithInfo = (id, data) => {
@@ -31,19 +34,23 @@ const HomeScreen = ({ navigation }) => {
     navigation.setOptions({
       title: "Signal",
       headerTintColor: currentTheme[0].text,
-      headerStyle: { backgroundColor: currentTheme[0].headerColor },
+      headerStyle: {
+        backgroundColor: currentTheme[0].headerColor,
+        paddingBottom: 50,
+        margin: 10,
+      },
       headerLeft: () => (
-        <TouchableOpacity
-          // onPress={logUserOut}
+        <View
           style={{
+            // flexDirection: "row",
             alignItems: "center",
-            justifyContent: "center",
-            margin: 10,
-            marginTop: 0,
+            // justifyContent: "center",
+            margin: 5,
           }}
         >
           <UserModal navigation={navigation} />
-        </TouchableOpacity>
+          <View stye={{ height: 20, backgroundColor: "yellow" }}></View>
+        </View>
       ),
       headerRight: () => (
         <View style={{ flexDirection: "row" }}>
@@ -78,7 +85,21 @@ const HomeScreen = ({ navigation }) => {
         </View>
       ),
     });
-  });
+    const retrieveChats = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(fireStore, "chats"));
+        setChats(
+          querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        );
+      } catch (e) {
+        console.log("error is: ", e);
+      }
+    };
+    retrieveChats();
+  }, []);
   const logUserOut = () => {
     auth.signOut();
     navigation.replace("Register");
@@ -87,6 +108,7 @@ const HomeScreen = ({ navigation }) => {
     <ChatInfoContext.Provider
       value={{
         openChatWithInfo,
+        chatHook: [chats, setChats],
       }}
     >
       <View style={{ position: "relative", flex: 1 }}>

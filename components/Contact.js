@@ -3,15 +3,11 @@ import React, { useContext } from "react";
 import { Avatar, Button, ListItem } from "@rneui/themed";
 import { UserContext } from "../contexts/UserContext";
 import { ChatInfoContext } from "../contexts/ChatInfoContext";
+import ChatModal from "./ChatModal";
 
 const Contact = (props) => {
-  const {
-    contact,
-    id,
-    data,
-    navigation,
-  } = props;
-  const { openChatWithUserInfo } = useContext(ChatInfoContext);
+  const { contact, id, data, navigation } = props;
+  const { openChatWithInfo } = useContext(ChatInfoContext);
   return (
     <ListItem.Swipeable
       key={id}
@@ -33,10 +29,10 @@ const Contact = (props) => {
         />
       )}
     >
-      <TouchableOpacity>
-        <Avatar rounded source={{ uri: contact.photoURL }} size={45} />
+      <TouchableOpacity onPress={() => alert("pressed")}>
+      <ChatModal data={data} id={id} size={50}/>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => openChatWithUserInfo(id, data)}>
+      <TouchableOpacity onPress={() => openChatWithInfo(id, data)}>
         <ListItem.Content>
           <ListItem.Title style={{ fontWeight: "800", fontSize: 18 }}>
             {data.chatName}

@@ -21,7 +21,7 @@ const AddChatScreen = ({ navigation }) => {
     navigation.setOptions({
       headerBackTitle: "Chats",
     });
-  });
+  },[]);
   const { currentTheme } = useContext(UserContext);
   const [userInput, setUserInput] = useState("");
   return (
@@ -33,6 +33,7 @@ const AddChatScreen = ({ navigation }) => {
       <TextInput
         placeholder="Chat name goes here"
         value={userInput}
+        autoFocus
         style={{
           marginVertical: 10,
           borderWidth: 3,

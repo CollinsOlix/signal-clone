@@ -6,7 +6,7 @@ const Attribution = ({ navigation }) => {
     navigation.setOptions({
       title: "Special Thanks",
     })
-  );
+  ,[]);
   return (
     <View>
       <Text>Attribution</Text>

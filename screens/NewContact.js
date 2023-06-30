@@ -8,7 +8,7 @@ const NewContact = ({ navigation }) => {
       headerBackTitle: "Chats",
       
     });
-  });
+  },[]);
   return (
     <View>
       <Text>NewContact</Text>

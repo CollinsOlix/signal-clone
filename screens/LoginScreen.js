@@ -1,4 +1,10 @@
-import { View, Text, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  Platform,
+  Keyboard,
+} from "react-native";
 import React, {
   useContext,
   useEffect,
@@ -62,7 +68,11 @@ const LoginScreen = ({ navigation }, props) => {
   const eAddress = useRef();
   const passkey = useRef();
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      onTouchStart={() => Keyboard.dismiss()}
+    >
       <Text
         style={{
           color: "#4477eb",
@@ -88,6 +98,7 @@ const LoginScreen = ({ navigation }, props) => {
         <View
           style={{
             padding: 5,
+            paddingVertical: 10,
             flexDirection: "row",
             justifyContent: "space-between",
             borderStyle: "solid",
@@ -115,6 +126,7 @@ const LoginScreen = ({ navigation }, props) => {
                 ? passkey.current.focus()
                 : eAddress.current.focus();
             }}
+            
           />
         </View>
         <View
