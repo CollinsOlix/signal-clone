@@ -63,9 +63,10 @@ const RegisterScreen = ({ navigation }) => {
       onTouchStart={() => Keyboard.dismiss()}
       style={{ flex: 1, width: "100%", alignItems: "center" }}
     >
+
       <KeyboardAvoidingView
         ref={screen}
-        behavior="padding"
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
         onTouchEnd={() => {
           // screen.current.focus();
@@ -81,7 +82,7 @@ const RegisterScreen = ({ navigation }) => {
         >
           Welcome to Signal!
         </Text>
-        <Signal size="150" />
+        <Signal size="150" fill={currentTheme[0].headerColor}/>
         <Text
           style={{
             color: "#4477eb",

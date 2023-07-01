@@ -29,24 +29,29 @@ const isMail = (str) => str.search(filter) == 0;
 const LoginScreen = ({ navigation }, props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { userLoggedOut } = useContext(UserContext);
+  const { userLoggedOut, currentTheme, helperTextValue, userSignedIn } =
+    useContext(UserContext);
+  const [helperText, setHelpertext] = helperTextValue;
   const [loggedOut, setLoggedOut] = userLoggedOut;
   const [isLoading, setIsLoading] = useState(false);
+  const [signedIn, setSignedIn] = userSignedIn;
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     retrieveStoredData()
       .then(async (data) => {
         data &&
           (setEmail(data[0]),
           setPassword(data[1]),
+          navigation.navigate("LoadingScreen"),
           loggedOut === false &&
             (setIsLoading(true),
             await signInWithEmailAndPassword(auth, data[0], data[1]),
+            setHelpertext("Retrieving chats"),
             setLoggedOut(false),
-            navigation.replace("Home")));
+            setSignedIn(true)));
       })
       .catch((e) => {
-        console.log("uselayout error", e);
+        console.log("LoginScreen uselayout error", e);
       });
   }, []);
 
@@ -83,7 +88,7 @@ const LoginScreen = ({ navigation }, props) => {
       >
         Welcome back!
       </Text>
-      <Signal size="200" />
+      <Signal size="200" fill={currentTheme[0].headerColor} />
       <Text
         style={{
           color: "#4477eb",
@@ -126,7 +131,6 @@ const LoginScreen = ({ navigation }, props) => {
                 ? passkey.current.focus()
                 : eAddress.current.focus();
             }}
-            
           />
         </View>
         <View

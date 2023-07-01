@@ -14,11 +14,12 @@ import ChatScreen from "./screens/ChatScreen";
 import Settings from "./screens/Settings";
 import Attribution from "./screens/Attribution";
 import AddChatScreen from "./screens/AddChatScreen";
+import LoadingScreen from "./screens/LoadingScreen";
 
 const themes = {
   light: {
     backdrop: "#ececec",
-    text: "#fff",
+    text: "#131313",
     headerColor: "rgb(10,90,231)",
   },
   dark: {
@@ -33,6 +34,9 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [goHome, setGoHome] = useState(false);
   const [loggedOut, setLoggedOut] = useState(false);
+  const [helperText, setHelpertext] = useState("Logging In");
+  const [chats, setChats] = useState([]);
+  const [signedIn, setSignedIn] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -49,6 +53,9 @@ export default function App() {
         userLoggedOut: [loggedOut, setLoggedOut],
         themes,
         currentTheme: [currentTheme, setCurrentTheme],
+        helperTextValue: [helperText, setHelpertext],
+        chatsValue: [chats, setChats],
+        userSignedIn: [signedIn, setSignedIn],
       }}
     >
       <NavigationContainer>
@@ -61,6 +68,15 @@ export default function App() {
             headerTitleAlign: "center",
           }}
         >
+          {/* <Stack.Navigator
+          initialRouteName="LoadingScreen"
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: currentTheme.headerColor,
+            },
+            headerTitleAlign: "center",
+          }}
+        > */}
           <Stack.Screen
             name="Login"
             component={LoginScreen}
@@ -71,6 +87,13 @@ export default function App() {
               headerTitleStyle: {
                 fontWeight: "bold",
               },
+            }}
+          />
+          <Stack.Screen
+            name="LoadingScreen"
+            component={LoadingScreen}
+            options={{
+              headerShown: "false",
             }}
           />
           <Stack.Screen

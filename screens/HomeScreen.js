@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
+  SafeAreaView,
 } from "react-native";
 import React, { useContext, useLayoutEffect, useState } from "react";
 import { auth } from "../FireBase.config";
@@ -17,11 +18,8 @@ import ContactList from "../components/ContactList";
 import { Icon } from "@rneui/base";
 import AddNewModal from "../components/AddNewModal";
 import UserModal from "../components/UserModal";
-import { collection, getDocs } from "firebase/firestore";
-import { fireStore } from "../FireBase.config";
 
 const HomeScreen = ({ navigation }) => {
-  const [chats, setChats] = useState([]);
   const { user, currentTheme } = useContext(UserContext);
 
   const openChatWithInfo = (id, data) => {
@@ -36,8 +34,6 @@ const HomeScreen = ({ navigation }) => {
       headerTintColor: currentTheme[0].text,
       headerStyle: {
         backgroundColor: currentTheme[0].headerColor,
-        paddingBottom: 50,
-        margin: 10,
       },
       headerLeft: () => (
         <View
@@ -85,20 +81,6 @@ const HomeScreen = ({ navigation }) => {
         </View>
       ),
     });
-    const retrieveChats = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(fireStore, "chats"));
-        setChats(
-          querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            data: doc.data(),
-          }))
-        );
-      } catch (e) {
-        console.log("error is: ", e);
-      }
-    };
-    retrieveChats();
   }, []);
   const logUserOut = () => {
     auth.signOut();
@@ -108,18 +90,17 @@ const HomeScreen = ({ navigation }) => {
     <ChatInfoContext.Provider
       value={{
         openChatWithInfo,
-        chatHook: [chats, setChats],
       }}
     >
-      <View style={{ position: "relative", flex: 1 }}>
-        <StatusBar style="auto" />
+      <SafeAreaView style={{ position: "relative", flex: 1 }}>
+        <StatusBar style="light" />
         <View style={styles.modal}>
           <AddNewModal navigation={navigation} />
         </View>
-        <View style={styles.screen}>
+        <View style={[styles.screen]}>
           <ContactList navigation={navigation} />
         </View>
-      </View>
+      </SafeAreaView>
     </ChatInfoContext.Provider>
   );
 };
@@ -128,6 +109,7 @@ const styles = StyleSheet.create({
   screen: {
     zIndex: 1,
     position: "relative",
+    flex: 1,
   },
   modal: {
     position: "absolute",

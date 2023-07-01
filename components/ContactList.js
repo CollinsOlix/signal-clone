@@ -4,13 +4,11 @@ import Contact from "./Contact";
 import { UserContext } from "../contexts/UserContext";
 import { ChatInfoContext } from "../contexts/ChatInfoContext";
 const ContactList = ({ navigation }) => {
-  const { user } = useContext(UserContext);
-  const {
-    chatHook,
-  } = useContext(ChatInfoContext);
-const [chats, setChats] = chatHook;
+  const { user, chatsValue } = useContext(UserContext);
+  const { chatHook } = useContext(ChatInfoContext);
+  const [chats, setChats] = chatsValue;
   return (
-    <ScrollView style={{ width: "100%" }}>
+    <ScrollView style={{ width: "100%", height: "100%" }}>
       {chats.map(({ id, data }) => (
         <View key={Math.random() * 3.2}>
           <Contact

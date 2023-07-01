@@ -8,20 +8,22 @@ import { collection, addDoc } from "firebase/firestore";
 const AddChatScreen = ({ navigation }) => {
   const createChat = async () => {
     try {
+      navigation.replace("LoadingScreen");
       const docRef = await addDoc(collection(fireStore, "chats"), {
         chatName: userInput,
       });
       console.log("Document written with ID: ", docRef.id);
-      navigation.goBack();
+      
     } catch (e) {
       console.error("Error adding document: ", e);
+    } finally {
     }
   };
   useLayoutEffect(() => {
     navigation.setOptions({
       headerBackTitle: "Chats",
     });
-  },[]);
+  }, []);
   const { currentTheme } = useContext(UserContext);
   const [userInput, setUserInput] = useState("");
   return (
