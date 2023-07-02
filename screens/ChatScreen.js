@@ -10,7 +10,7 @@ import {
   TextInput,
   Platform,
 } from "react-native";
-import React, { useContext, useLayoutEffect, useState } from "react";
+import React, { useContext, useLayoutEffect, useRef, useState } from "react";
 import { Avatar, Icon } from "@rneui/base";
 import ChatModal from "../components/ChatModal";
 import { StatusBar } from "expo-status-bar";
@@ -49,12 +49,34 @@ const ChatScreen = ({
         }
       );
       console.log("Document created with ID: ", newDocRef.id);
+      setUserInput("");
     } catch (e) {
       console.log("Error creating message: ", e);
+    } finally {
+      retrieveMessages();
+      console.log(messages.length);
     }
-    setUserInput("");
   };
 
+  const retrieveMessages = async () => {
+    try {
+      const q = query(
+        collection(fireStore, "chats", id, "messages"),
+        orderBy("timestamp", "asc")
+      );
+      const querySnapshot = await getDocs(q);
+      setMessages(
+        querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      );
+    } catch (e) {
+      console.log("error is: ", e);
+    } finally {
+    }
+  };
+  const scrollViewRef = useRef();
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: data.chatName,
@@ -86,26 +108,9 @@ const ChatScreen = ({
         </View>
       ),
     });
-    const retrieveMessages = async () => {
-      try {
-        const querySnapshot = await getDocs(
-          collection(fireStore, "chats", id, "messages"),
-          orderBy("timestamp", "desc")
-        );
-        setMessages(
-          querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            data: doc.data(),
-          }))
-        );
-      } catch (e) {
-        console.log("error is: ", e);
-      } finally {
-        console.log(messages.length);
-      }
-    };
+
     retrieveMessages();
-  }, [messages.length]);
+  }, [data]);
   const {
     currentTheme: [currentTheme],
   } = useContext(UserContext);
@@ -124,12 +129,18 @@ const ChatScreen = ({
         behavior={Platform.OS === "ios" ? "padding" : ""}
       >
         <>
-          <ScrollView style={{ backgroundColor: "red"}}>
-            {messages.map(({ data: { uid, message, timestamp }, id }) => (
+          <ScrollView
+            style={{ paddingTop: 10 }}
+            ref={scrollViewRef}
+            onContentSizeChange={() =>
+              scrollViewRef.current.scrollToEnd({ animated: true })
+            }
+          >
+            {messages.map(({ data: { userid, message, timestamp }, id }) => (
               <Message
                 key={id}
-                userid={uid}
-                time={timestamp.toLocaleString()}
+                userid={userid}
+                time={timestamp}
                 message={message}
               />
             ))}
@@ -184,11 +195,11 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     shadowColor: "#000",
     shadowOffset: {
-      width: 1,
+      width: 0,
       height: 2,
     },
-    shadowOpacity: 1,
-    shadowRadius: 1,
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
     fontSize: 20,
   },
 });

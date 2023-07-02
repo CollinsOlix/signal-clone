@@ -6,10 +6,13 @@ import { StyleSheet } from "react-native";
 // import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import { UserContext } from "../contexts/UserContext";
 import { Icon } from "@rneui/base";
-
 const Message = (props) => {
-  const { user } = useContext(UserContext);
+  const {
+    user,
+    currentTheme: [currentTheme],
+  } = useContext(UserContext);
   const { message, time, userid } = props;
+  // console.log(user.uid, props);
   return (
     <View style={styles.wrapper}>
       <TouchableOpacity
@@ -19,27 +22,19 @@ const Message = (props) => {
         style={{
           position: "relative",
           flex: 1,
-          backgroundColor: "green",
-          paddingTop: 10,
+          justifyContent: "space-around",
+          width: "100%",
         }}
       >
         <View
           style={[
-            styles.notch,
-            {
-              right: userid === user.uid ? -5 : -190,
-              borderTopColor:
-                userid === user.uid ? "rgb(31,44,52)" : "rgb(0,93,75)",
-            },
-          ]}
-        ></View>
-        <View
-          style={[
             styles.message,
             {
-              right: userid == user.uid ? -7 : -100,
+              right: userid !== user.uid ? -7 : -100,
               backgroundColor:
-                userid === user.uid ? "rgb(31,44,52)" : "rgb(0,93,75)",
+                userid !== user.uid
+                  ? "rgb(31,44,122)"
+                  : currentTheme.headerColor,
             },
           ]}
         >
@@ -54,7 +49,11 @@ const Message = (props) => {
                 marginRight: 5,
               }}
             >
-              {time}
+              {`${time.toDate().getHours()}:${
+                String(time.toDate().getMinutes()).length < 2
+                  ? "0" + time.toDate().getMinutes()
+                  : time.toDate().getMinutes()
+              }`}
             </Text>
             {/* <FontAwesomeIcon icon={faCheck} size={15} /> */}
             <Icon size={15} name="check" color="white" />
@@ -68,10 +67,9 @@ const Message = (props) => {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
-    flexDirection: "row",
     width: "100%",
-    alignItems: "flex-end",
-    backgroundColor: "rgb(200,93,75)",
+    // alignItems: "flex-end",
+    paddingTop: 15,
   },
   notch: {
     position: "relative",
@@ -108,7 +106,7 @@ const styles = StyleSheet.create({
   text: {
     color: "#fafefc",
     fontSize: 18,
-    textAlign: "right",
+    textAlign: "justify",
   },
   timeAndCheck: {
     flexDirection: "row",
